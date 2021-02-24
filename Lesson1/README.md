@@ -102,3 +102,22 @@
 ### 13. Попробуйте выложить его в Github-pages
 
 ### 14. Добавьте информацию о своей первой странице в Readme и обновленную информацию в Github
+
+## Context
+
+!DOCTYPE
+head
+body
+div
+span
+a
+header
+footer
+main
+nav
+aside
+section
+article
+ul
+ol
+dl
