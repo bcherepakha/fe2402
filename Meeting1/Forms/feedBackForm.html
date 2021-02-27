@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeedBack</title>
+    <style>
+        label {
+            display: block;
+        }
+
+        span {
+            display: block;
+        }
+
+        input {
+            display: block;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <form>
+        <div>
+            <label>
+                <span>Ваше имя: *</span>
+
+                <input
+                    placeholder="Your name"
+                    type="text"
+                    name="name"
+                    autocomplete="name"
+                    required>
+            </label>
+
+            <span>
+                <span>Ваш возраст: *</span>
+
+                <label>
+                    <input type="radio" name="age" value="less then 20">
+                    до 20
+                </label>
+                <label>
+                    <input type="radio" name="age" value="20-30">
+                    20-30
+                </label>
+                <label>
+                    <input type="radio" name="age" value="30-40">
+                    30-40
+                </label>
+                <label>
+                    <input type="radio" name="age" value="40+">
+                    более 40
+                </label>
+
+            </span>
+
+            <span>
+                <span>Если у вас аккакунт</span>
+
+                <label>
+                    <input type="checkbox" name="facebookAkk" checked>
+                    Facebook
+                </label>
+
+                <label>
+                    <input type="checkbox" name="twitterAkk">
+                    Twitter
+                </label>
+
+                <span>
+                    <input type="checkbox" name="anotherAkk">
+
+                    <label>
+                        Свой вариант
+
+                        <input type="text" name="anotherAkkName">
+                    </label>
+                </span>
+            </span>
+
+            <label>
+                <span>E-mail адрес: *</span>
+
+                <input type="email" name="email" autocomplete="email" required>
+            </label>
+
+            <label>
+                <span>Тема сообщения: *</span>
+
+                <input type="text" name="theme" autocomplete="off" required>
+            </label>
+
+            <label>
+                <span>Текст сообщения: *</span>
+
+                <textarea required name="message"></textarea>
+            </label>
+        </div>
+        <div>
+            <button type="submit">Отправить</button>
+        </div>
+    </form>
+
+</body>
+</html>
