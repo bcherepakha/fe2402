@@ -1,4 +1,6 @@
-# Урок 2. Основы CSS. Начало flexbox.
+# Урок 2. Основы CSS. Начало flexbox
+
+[LiveServer Extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 
 ## Теория
 
