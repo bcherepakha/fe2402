@@ -30,3 +30,14 @@
 * [Кому нужны флексы](https://htmlacademy.ru/blog/boost/frontend/short-8)
 * [Какие нужны фавиконки](https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs)
 * [Как загружать посторонние шрифты](https://htmlacademy.ru/blog/boost/frontend/short-14)
+
+## Конспект
+
+4 способа выбора элемента CSS (class, id, attribute, tag)
+Специфичность
+viewport
+1px
+1vw = 1 / 100 viewport width
+1vh = 1 / 100 viewport heigh
+1vmin = min(1vw, 1vh)
+1vmax = max(1vw, 1vh)
