@@ -8,7 +8,14 @@
     <link rel="stylesheet" href="calendar.css">
 </head>
 <body>
-    <div class="day"></div>
+    <div class="day">
+        <div class="day__header">
+            <h1 class="day__title">
+                22 March 2018
+            </h1>
+        </div>
+        <div class="day__schedule"></div>
+    </div>
     <div class="right-pannel">
         <div class="right-pannel__calendar calendar">
             <div class="calendar__header">
@@ -39,6 +46,9 @@
                     <li class="calendar__day-name">Sun</li>
                 </ul>
                 <ul class="calendar__day-list">
+                    <li class="calendar__day calendar__day--not-in-current-month">
+                        <a href="?day=2018-02-28" class="calendar__day-link">28</a>
+                    </li>
                     <li class="calendar__day">
                         <!-- http://127.0.0.1:5500/Lesson3/calendar.html?day=2018-03-01 -->
                         <a href="?day=2018-03-01" class="calendar__day-link">1</a>
