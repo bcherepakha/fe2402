@@ -10,6 +10,24 @@
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_ZpC3gnD_vx3rCs.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700; /* bold */
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_dJE3gnD_vx3rCs.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
     font-weight: 800;
     font-display: swap;
     src: url(https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_c5H3gnD_vx3rCs.woff2) format('woff2');
@@ -33,6 +51,11 @@ body {
 }
 
 #head {
+    background: #FAFAFA;
+    padding-bottom: 131px;
+}
+
+.head__content {
     /* background-image: url("img/cover.jpg"); */
     /* background-repeat: no-repeat; */
     /* background-position: center center; */
@@ -48,7 +71,7 @@ body {
     align-items: stretch;
     justify-content: flex-start;
 
-    margin: 0 0 131px;
+    margin: 0;
 }
 
 .head__nav-row {
@@ -246,4 +269,149 @@ body {
 .header__link:hover .header__link-icon,
 .header__link:focus .header__link-icon {
     fill: #fff;
+}
+
+.section {
+    background: #FAFAFA;
+
+    display: flex;
+    justify-content: center;
+}
+
+.section__wrapper {
+    width: 100%;
+    max-width: 1050px;
+    padding: 80px 0;
+
+    box-sizing: border-box;
+}
+
+.section__title {
+    font-weight: 700;
+    font-size: 2.8571rem;
+    line-height: 1.42;
+
+    text-align: center;
+
+    color: #252B42;
+    margin: 0 0 10px;
+}
+
+.section__title--practice {
+    margin-top: 45px;
+}
+
+.section__title--practice .section__description {
+    margin-bottom: 45px;
+}
+
+.section__description {
+    font-weight: 500;
+    text-align: center;
+
+    max-width: 48.666%;
+    margin: 0 auto 50px;
+}
+
+.section__row {
+    display: flex;
+}
+
+.section__item {
+    flex: 1 0 0;
+}
+
+.benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background: #FFFFFF;
+
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.benefit:not(:first-child) {
+    margin-left: 30px;
+}
+
+.benefit__icon {
+    display: block;
+    flex: 0 0 48px;
+    width: 48px;
+    fill: #00A0C1;
+}
+
+.benefit__count {
+    display: block;
+
+    font-weight: 700;
+    font-size: 2.8571rem;
+
+    color: #252B42;
+    margin-top: 10px;
+}
+
+.benefit__title {
+    display: block;
+    font-weight: 700;
+    font-size: 1.1429rem;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+.card {
+    background: #fff;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.card:not(:first-child) {
+    margin-left: 30px;
+}
+
+.card__title {
+    margin: 30px 30px 15px;
+    font-weight: 700;
+    font-size: 1.4286rem;
+    line-height: 1.5;
+
+    color: #252B42;
+}
+
+.card__description {
+    margin: 0 30px 30px;
+
+    font-weight: 500;
+}
+
+/* 138/231 = .5974 */
+.card__img-wrapper {
+    margin-top: auto;
+
+    display: block;
+    width: 100%;
+    height: 0;
+
+    padding-bottom: 59.74%;
+
+    box-sizing: content-box;
+
+    background: red;
+
+    position: relative;
+}
+
+.card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
 }
