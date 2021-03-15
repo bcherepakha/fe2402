@@ -1,4 +1,4 @@
-# Урок 14
+# Урок 6 Grid
 
 * [Grid Cheatsheet](https://yoksel.github.io/grid-cheatsheet/)
 * [Гибкая разметка без медиа-запросов: функции min(), max(), clamp()](https://habr.com/ru/post/499088/)

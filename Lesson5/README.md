@@ -1,4 +1,4 @@
-# Урок 5
+# Урок 5 Адаптивность
 
 * [CSS3-медиазапросы](https://html5book.ru/css3-mediazaprosy/#media)
 * [Гибкие изображения](https://www.smashingmagazine.com/2014/05/responsive-images-done-right-guide-picture-srcset/)
