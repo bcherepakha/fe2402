@@ -1,0 +1,105 @@
+/* mobile first */
+.first {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.second {
+    display: flex;
+}
+
+.first .colored {
+    flex: 0 0 50%;
+}
+
+/* screen > 768px */
+@media (min-width: 768px) {
+    .fourth {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .fourth .colored:nth-child(-n+2) {
+        flex: 0 0 50%;
+    }
+
+    .fifth {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .fifth .colored {
+        flex: 1 0 50%;
+    }
+}
+
+/* screen > 960px */
+@media (min-width: 960px) {
+    .third {
+        display: flex;
+    }
+
+    .fourth {
+        flex-wrap: nowrap;
+    }
+
+    .fourth .colored:nth-child(2) {
+        flex: 0 0 30%;
+    }
+
+    .fourth .colored:not(:nth-child(2)) {
+        flex: 1 0 30%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .third {
+        flex-wrap: wrap;
+    }
+
+    .third .colored {
+        flex: 1 0 50%;
+    }
+
+    .fifth {
+        justify-content: center;
+    }
+
+    .fifth .colored {
+        flex: 0 0 33%;
+    }
+}
+
+@media (min-width: 1800px) {
+    .first {
+        flex-wrap: nowrap;
+    }
+
+    .first .colored {
+        flex: 1 0 0;
+    }
+
+    .third {
+        flex-wrap: nowrap;
+    }
+
+    .third .colored {
+        flex: 0 0 25%;
+    }
+
+    .fourth .colored.colored {
+        flex: 0 0 25%;
+    }
+
+    .fourth .colored:last-child {
+        flex-grow: 1;
+    }
+
+    .fifth {
+        flex-wrap: nowrap;
+    }
+
+    .fifth .colored {
+        flex: 1 0 0;
+    }
+}

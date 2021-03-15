@@ -1,0 +1,17 @@
+.fourth {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.fourth .colored:nth-child(-n+2) {
+    flex: 0 0 50%;
+}
+
+.fifth {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.fifth .colored {
+    flex: 1 0 50%;
+}
