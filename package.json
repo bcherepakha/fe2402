@@ -1,0 +1,26 @@
+{
+  "name": "fe2402",
+  "version": "1.0.0",
+  "description": "fe2402",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-recommended": "^4.1.0",
+    "stylelint": "^13.12.0",
+    "stylelint-config-standard": "^21.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcherepakha/fe2402.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcherepakha/fe2402/issues"
+  },
+  "homepage": "https://github.com/bcherepakha/fe2402#readme"
+}

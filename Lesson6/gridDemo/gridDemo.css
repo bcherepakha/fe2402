@@ -6,7 +6,7 @@ body {
 .header,
 .footer {
     padding: 25px 0;
-    background-color: #845EC2;
+    background-color: #845ec2;
     margin: 20px 0;
 }
 
@@ -15,9 +15,9 @@ body {
 }
 
 .nav__container-item {
-    background-color: #D65DB1;
+    background-color: #d65db1;
     padding: 10px;
-    border: 1px dashed #FFC75F;
+    border: 1px dashed #ffc75f;
 }
 
 .nav__container {
@@ -28,24 +28,24 @@ body {
 
 .main__item {
     padding: 0;
-    background-color: #FF6F91;
-    border: 1px dashed #2C73D2;
+    background-color: #ff6f91;
+    border: 1px dashed #2c73d2;
 }
 
 .main__item--a {
     padding-top: 45%;
-    background-color: #FF9671;
+    background-color: #ff9671;
 }
 
 .main__item--b {
     padding-top: 45%;
-    background-color: #FFC75F;
+    background-color: #ffc75f;
 }
 
 .article__item {
     padding: 25px 0;
-    background-color: #F9F871;
-    border: 1px dashed #008F7A;
+    background-color: #f9f871;
+    border: 1px dashed #008f7a;
 }
 
 /* GRID */
@@ -56,7 +56,7 @@ body {
 
 .nav__container {
     display: grid;
-    gap: 10px
+    gap: 10px;
 }
 
 .main {
@@ -70,7 +70,7 @@ body {
 }
 
 @media (min-width: 1200px) {
-    .nav__container {
+    /* .nav__container {
         grid-template-columns: repeat(9, 1fr);
     }
 
@@ -86,11 +86,42 @@ body {
         grid-column: 1 / -1;
 
         grid-template-columns: repeat(3, 1fr);
-    }
+    } */
+
+.nav__container {
+    grid-template-columns: repeat(9, 1fr);
+}
+
+.main {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "a a"
+        "b1 b2"
+        "article article";
+}
+
+.main__item--a {
+    grid-area: a;
+}
+
+.main__item--b:nth-child(2) {
+    grid-area: b1;
+}
+
+.main__item--b:nth-child(3) {
+    grid-area: b2;
+}
+
+.article {
+    grid-area: article;
+
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: "el el el";
+}
 }
 
 @media (min-width: 1600px) {
-    .main {
+    /* .main {
         grid-template-columns: repeat(3, 1fr);
         row-gap: 20px;
         column-gap: 10px;
@@ -106,5 +137,5 @@ body {
         grid-row: 1 / span 2;
 
         grid-template-columns: 1fr;
-    }
+    } */
 }
