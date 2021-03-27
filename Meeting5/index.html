@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meeting 4</title>
-    <script src='data.js' defer></script>
-    <script src='dataAnalize.js' defer></script>
-</head>
-<body>
-
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Meeting 5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <!-- add test framework -->
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+      mocha.setup('bdd');
+    </script>
+    <!-- describe functions and tests -->
+    <script src="arrayMethods.js"></script>
+    <script src="test/arrayMethods.test.js"></script>
+    <script src="arrayTasks.js"></script>
+    <script src="test/arrayTasks.test.js"></script>
+    <!-- run tests -->
+    <script>
+      mocha.run();
+    </script>
+  </body>
 </html>

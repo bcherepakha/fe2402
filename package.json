@@ -4,8 +4,10 @@
   "description": "fe2402",
   "dependencies": {},
   "devDependencies": {
+    "chai": "^4.3.4",
     "eslint": "^7.22.0",
     "eslint-config-recommended": "^4.1.0",
+    "mocha": "^8.3.2",
     "stylelint": "^13.12.0",
     "stylelint-config-standard": "^21.0.0"
   },
