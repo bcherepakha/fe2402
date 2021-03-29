@@ -1,4 +1,4 @@
-# Урок 6
+# Урок 7
 
 * [Основы JavaScript](https://learn.javascript.ru/first-steps)
 * [Структуры данных](https://learn.javascript.ru/types)

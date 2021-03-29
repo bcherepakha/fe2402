@@ -1,4 +1,4 @@
-# Урок 8
+# Урок 9
 
 * [Документ](https://learn.javascript.ru/document)
 * [Продвинутая работа с функциями](https://learn.javascript.ru/advanced-functions)

@@ -1,4 +1,4 @@
-# Урок 7
+# Урок 8
 
 * [Объекты: основы](https://learn.javascript.ru/object-basics)
 * [Массивы](https://learn.javascript.ru/array)
