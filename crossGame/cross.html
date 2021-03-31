@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cross</title>
     <link rel="stylesheet" href="cross.css">
-    <script src="cross.js"></script>
+    <script defer src="cross.js"></script>
+    <script defer src="ui.js"></script>
 </head>
 <body>
-
-    <div class="cross">
+    <div id="cross" class="cross" DATA-ID-VALUE="cross">
         <div class="cross__board">
             <div class="cross__board-item" data-index="0">
                 <svg class="x cross__board-item-el" viewBox="0 0 80 80">
@@ -31,7 +31,5 @@
             <div class="cross__board-item" data-index="8"></div>
         </div>
     </div>
-
-
 </body>
 </html>

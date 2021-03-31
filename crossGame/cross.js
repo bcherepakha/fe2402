@@ -9,12 +9,36 @@ const GAME_STARTED = 'started';
 const GAME_NOT_STARTED = 'not started';
 
 /**
- * @typedef {object} TLine
- * @property {typeof ROW_LINE | typeof COLUMN_LINE | typeof DIAGONAL_LINE} type
- * @property {number} index
- * @property {(X | ZERO | EMPTY)[]} cells
+ * @typedef {typeof X | typeof ZERO} TUser
  */
 
+/**
+ * @typedef {TUser | typeof EMPTY} TCellValue
+ */
+
+/**
+ * @typedef {typeof GAME_ENDED | typeof GAME_STARTED | typeof GAME_NOT_STARTED} TGameStatus
+ */
+
+/**
+ * @typedef {typeof ROW_LINE | typeof COLUMN_LINE | typeof DIAGONAL_LINE} TLineType
+ */
+
+/**
+ * @typedef {object} TLine
+ * @property {TLineType} type
+ * @property {number} index
+ * @property {(TCellValue)[]} cells
+ */
+
+/**
+ * @type {object} TCross
+ * @property {TCellValue[]} board
+ * @property {TUser} currentUser
+ * @property {TUser[]} users
+ * @property {TGameStatus} status
+ * @property {number} stepCount
+ */
 const cross = {
     board: new Array(9).fill(EMPTY),
     currentUser: X,
@@ -30,7 +54,7 @@ const cross = {
         cross.status = GAME_STARTED;
         cross.stepCount = 0;
 
-        cross.renderBoard();
+        cross.render();
     },
     /**
      * @param {number} place    - cell index in board
@@ -60,7 +84,7 @@ const cross = {
             // if winLine is object -> TLine
             cross.status = GAME_ENDED;
 
-            cross.renderBoard();
+            cross.render();
             console.log('Winner: ', cross.currentUser);
 
             return ;
@@ -70,7 +94,7 @@ const cross = {
         cross.currentUser = nextUser;
         cross.stepCount++;
 
-        cross.renderBoard();
+        cross.render();
 
         return ;
     },
@@ -153,7 +177,7 @@ const cross = {
         return line.cells
             .every(el => el === currentUser);
     },
-    renderBoard: function() {
+    render: function() {
         console.log('currentUser: ', cross.currentUser, '; step: ', cross.stepCount + 1);
         for (let rowIndex = 0; rowIndex < 3; rowIndex++) {
             console.log( cross.getRow(rowIndex).cells.join(' | ') );
@@ -162,4 +186,3 @@ const cross = {
 };
 
 console.log( cross );
-cross.start();
