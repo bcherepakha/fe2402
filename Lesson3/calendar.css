@@ -182,6 +182,7 @@ body {
 }
 
 .calendar__day-link:hover,
+.calendar__day--current .calendar__day-link,
 .calendar__day--display .calendar__day-link {
     background: #3C82F9;
 }
