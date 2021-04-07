@@ -5,5 +5,9 @@
 
 ## Домашнее задание
 
+* [Доделать паузу/пуск](timer.js);
+
+## Для ознакомления
+
 * [Нотификация](https://notifyjs.jpillora.com/)
 * Попробуйте реализовать [push-уведомления](https://tproger.ru/articles/html5-notifications-is-easy/)
