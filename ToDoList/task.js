@@ -1,153 +1,171 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 const DB_CLICK_TIME = 500;
 
-/** @typedef {objetc} Task
- * @property {number} id
- * @property {string} text
- * @property {boolean} completed
- */
-/**
- * @param {Task} taskObj
- */
-function Task(taskObj) {
-    if (!taskObj.id) {
-        throw new Error(`not valid id: ${taskObj.id}`);
+class Task extends EventEmiter {
+    constructor(taskObj, removeTaskHandler) {
+        super();
+
+        if (!taskObj.id) {
+            throw new Error(`not valid id: ${taskObj.id}`);
+        }
+
+        this.state = taskObj;
+        this.editing = false;
+        this.hidden = false;
+
+        this._events = {};
+
+        this.outlineClick = this.outlineClick.bind(this);
+        this.removeTaskHandler = removeTaskHandler;
+
+        this.createElements();
     }
 
-    this.state = taskObj;
-    this.editing = false;
-    this.hidden = false;
+    createElements() {
+        const rootEl = document.createElement('li');
+        const viewEl = document.createElement('div');
+        const editEl = document.createElement('form');
+        const completedEl = document.createElement('input');
+        const textEl = document.createElement('span');
+        const destroyEl = document.createElement('button');
+        const taskEditEl = document.createElement('input');
+        const changeSubmit = document.createElement('button');
 
-    this.createElements();
-}
+        rootEl.append(viewEl, editEl);
+        viewEl.append(completedEl, textEl, destroyEl);
+        editEl.append(taskEditEl, changeSubmit);
 
-Task.prototype.createElements = function () {
-    const rootEl = document.createElement('li');
-    const viewEl = document.createElement('div');
-    const editEl = document.createElement('form');
-    const completedEl = document.createElement('input');
-    const textEl = document.createElement('span');
-    const destroyEl = document.createElement('button');
-    const taskEditEl = document.createElement('input');
-    const changeSubmit = document.createElement('button');
+        taskEditEl.className = 'edit';
+        taskEditEl.value = this.state.text;
+        changeSubmit.className = 'visually-hidden';
+        changeSubmit.type = 'submit';
 
-    rootEl.append(viewEl, editEl);
-    viewEl.append(completedEl, textEl, destroyEl);
-    editEl.append(taskEditEl, changeSubmit);
+        destroyEl.className = 'destroy';
+        completedEl.className = 'toggle';
+        completedEl.type = 'checkbox';
+        viewEl.className = 'view';
+        textEl.innerText = this.state.text;
 
-    taskEditEl.className = 'edit';
-    taskEditEl.value = this.state.text;
-    changeSubmit.className = 'visually-hidden';
-    changeSubmit.type = 'submit';
+        completedEl.addEventListener('change', this.onChangeCompleted.bind(this));
+        textEl.addEventListener('click', this.onDbClickHandler());
+        editEl.addEventListener('submit', this.changeTextData.bind(this));
+        destroyEl.addEventListener('click', this.destroy.bind(this));
 
-    destroyEl.className = 'destroy';
-    completedEl.className = 'toggle';
-    completedEl.type = 'checkbox';
-    viewEl.className = 'view';
-    textEl.innerText = this.state.text;
+        document.addEventListener('click', this.outlineClick);
 
-    completedEl.addEventListener('change', this.onChangeCompleted.bind(this));
-    textEl.addEventListener('click', this.onDbClickHandler());
-    editEl.addEventListener('submit', this.changeTextData.bind(this));
-
-    document.addEventListener('click', this.outlineClick.bind(this));
-
-    this.textEl = textEl;
-    this.taskEditEl = taskEditEl;
-    this.completedEl = completedEl;
-    this.rootEl = rootEl;
-};
-
-Task.prototype.outlineClick = function (e) {
-    if (!this.editing
-        || e.target === this.taskEditEl
-        || e.target === this.textEl) {
-        return ;
+        this.changeSubmit = changeSubmit;
+        this.textEl = textEl;
+        this.taskEditEl = taskEditEl;
+        this.completedEl = completedEl;
+        this.rootEl = rootEl;
     }
 
-    this.toggleEditing();
-    // this.changeTextData(e);
-};
+    destroy() {
+        this.rootEl.remove();
 
-Task.prototype.changeTextData = function (e) {
-    e.preventDefault();
-    const newText = this.taskEditEl.value.trim();
+        document.removeEventListener('click', this.outlineClick);
 
-    if (!newText || newText.length < 3) {
-        return ;
+        this.dispatch('destroy');
     }
 
-    this.changeText(newText, false);
-    this.toggleEditing();
-};
+    outlineClick(e) {
+        const inInput = !this.editing
+            || e.target === this.taskEditEl
+            || e.target === this.textEl
+            || e.target === this.changeSubmit;
 
-Task.prototype.changeText = function (newText, needRender = true) {
-    this.state.text = newText;
+        if (inInput) {
+            return ;
+        }
 
-    if (needRender) {
+        this.toggleEditing();
+        // this.changeTextData(e);
+    }
+
+    changeTextData(e) {
+        e.preventDefault();
+        const newText = this.taskEditEl.value.trim();
+
+        if (!newText || newText.length < 3) {
+            return ;
+        }
+
+        this.changeText(newText, false);
+        this.toggleEditing();
+    }
+
+    changeText(newText, needRender = true) {
+        this.state.text = newText;
+
+        if (needRender) {
+            this.render();
+        }
+
+        this.dispatch('stateChanged');
+    }
+
+    onDbClickHandler() {
+        let prevClickTime = 0;
+
+        return () => {
+            const currentClickTime = Date.now();
+
+            if (currentClickTime - prevClickTime < DB_CLICK_TIME) {
+                prevClickTime = 0;
+                this.toggleEditing();
+            } else {
+                prevClickTime = currentClickTime;
+            }
+        };
+    }
+
+    onChangeCompleted() {
+        this.state.completed = this.completedEl.checked;
+        this.dispatch('stateChanged');
         this.render();
     }
-};
 
-Task.prototype.onDbClickHandler = function () {
-    let prevClickTime = 0;
+    toggleCompleted() {
+        this.state.completed = !this.state.completed;
+        this.dispatch('stateChanged');
+        this.render();
+    }
 
-    return () => {
-        const currentClickTime = Date.now();
+    toggleEditing() {
+        this.editing = !this.editing;
+        this.render();
+    }
 
-        if (currentClickTime - prevClickTime < DB_CLICK_TIME) {
-            prevClickTime = 0;
-            this.toggleEditing();
+    hide() {
+        this.hidden = true;
+        this.render();
+    }
+
+    show() {
+        this.hidden = false;
+        this.render();
+    }
+
+    render() {
+        const { completed, text } = this.state;
+        const { editing } = this;
+
+        this.textEl.innerText = text;
+        this.taskEditEl.value = text;
+
+        if (completed) {
+            this.rootEl.classList.add('completed');
         } else {
-            prevClickTime = currentClickTime;
+            this.rootEl.classList.remove('completed');
         }
-    };
-};
 
-Task.prototype.onChangeCompleted = function () {
-    this.state.completed = this.completedEl.checked;
-    this.render();
-};
+        if (editing) {
+            this.rootEl.classList.add('editing');
+        } else {
+            this.rootEl.classList.remove('editing');
+        }
 
-Task.prototype.toggleCompleted = function() {
-    this.state.completed = !this.state.completed;
-    this.render();
-};
-
-Task.prototype.toggleEditing = function() {
-    this.editing = !this.editing;
-    this.render();
-};
-
-Task.prototype.hide = function () {
-    this.hidden = true;
-    this.render();
-};
-
-Task.prototype.show = function () {
-    this.hidden = false;
-    this.render();
-};
-
-Task.prototype.delete = function() { };
-
-Task.prototype.render = function() {
-    const { completed, text } = this.state;
-    const { editing } = this;
-
-    this.textEl.innerText = text;
-    this.taskEditEl.value = text;
-
-    if (completed) {
-        this.rootEl.classList.add('completed');
-    } else {
-        this.rootEl.classList.remove('completed');
+        return this.rootEl;
     }
-
-    if (editing) {
-        this.rootEl.classList.add('editing');
-    } else {
-        this.rootEl.classList.remove('editing');
-    }
-
-    return this.rootEl;
-};
+}

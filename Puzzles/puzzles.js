@@ -16,6 +16,13 @@ function Puzzles(props = {}) {
 
     this.status = NOT_STARTED_STATUS;
 
+    // TODO: move to the method
+    document.addEventListener('keypress', (e) => {
+        console.log('keypress', e, this);
+
+        this.step(parseInt(e.key));
+    });
+
     //* return this;
 }
 
