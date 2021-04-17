@@ -1,5 +1,8 @@
-/* eslint-disable no-unused-vars */
-class EventEmiter {
+// module.exports = {
+//     EventEmiter
+// };
+
+export default class EventEmiter {
     constructor() {
         this._events = {};
     }

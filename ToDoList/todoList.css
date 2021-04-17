@@ -171,6 +171,10 @@ body {
 	border-bottom: 1px solid #ededed;
 }
 
+.todo-list li[hidden] {
+	display: none;
+}
+
 .todo-list li:last-child {
 	border-bottom: none;
 }
