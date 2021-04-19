@@ -1,5 +1,6 @@
 import EventEmiter from './eventEmiter.js';
 import Task from './task.js';
+import { tasksAPI } from './tasksAPI.js';
 
 export default class TaskStorage extends EventEmiter {
     constructor(storageKey) {
@@ -17,7 +18,22 @@ export default class TaskStorage extends EventEmiter {
         localStorage.removeItem(this.storageKey);
     }
 
-    read() {
+    readServer() {
+        return tasksAPI.getAllTasks()
+            .then(response => response.json())
+            .then(parsedData => {
+                if (Array.isArray(parsedData)) {
+                    this.items = parsedData
+                        .map(data => new Task(data));
+                }
+            })
+            .catch((ex) => {
+                console.log('wrong server data', ex);
+            })
+            .finally(() => this.dispatch('read'));
+    }
+
+    readLocal() {
         const localData = localStorage[this.storageKey];
 
         if (!localData) {
@@ -46,11 +62,17 @@ export default class TaskStorage extends EventEmiter {
 
     addItem(task) {
         this.items.push( task );
-        this.write();
+
+        if (this.storageKey) {
+            this.write();
+        }
     }
 
     removeItem(task) {
         this.items = this.items.filter(t => t !== task);
-        this.write();
+
+        if (this.storageKey) {
+            this.write();
+        }
     }
 }

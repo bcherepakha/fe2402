@@ -109,6 +109,37 @@ body {
 	width: calc(100% - 60px);
 }
 
+.header.disabled {
+	position: relative;
+	background: rgba(0, 0, 0, 0.3);;
+}
+
+.header.disabled::after {
+	content: '';
+
+	display: block;
+
+	width: 3em;
+	height: 3em;
+
+	background: red;
+
+	position: absolute;
+	top: 15%;
+	right: 10px;
+
+	animation: loader-rotate 100s infinite;
+}
+
+@keyframes loader-rotate {
+	from {
+		transform: rotate(0)
+	}
+	to {
+		transform: rotate(3600deg);
+	}
+}
+
 .main {
 	position: relative;
 	z-index: 2;
@@ -448,4 +479,22 @@ html .clear-completed:active {
 	100% {
 		transform: rotate(360deg)
 	}
+}
+
+.loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	background: rgba(0, 0, 0, 0.2);
+
+	display: block;
+
+	z-index: 2;
+}
+
+.loader[hidden] {
+	display: none;
 }

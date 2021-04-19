@@ -13,6 +13,7 @@
     <script src="list.js" type="module"></script>
     <script src="counter.js" type="module"></script>
     <script src="taskStorage.js" type="module"></script>
+    <script src="tasksAPI.js" type="module"></script>
     <script src="app.js" type="module"></script>
 </head>
 <body>
@@ -33,11 +34,11 @@
                 autofocus=""
                 name="task"
                 aria-label="What needs to be done?">
-            <button class="visually-hidden" type="submit">Add</button>
+            <button class="visually-hidden submit" type="submit">Add</button>
         </form>
         <div class="main">
             <ul class="todo-list">
-                <li>
+                <!-- <li>
                     <div class="view">
                         <input class="toggle" type="checkbox">
                         <span>Task 1</span>
@@ -57,7 +58,7 @@
                         <button class="destroy"></button>
                     </div>
                     <input class="edit" value="Task 2">
-                </li>
+                </li> -->
             </ul>
         </div>
         <footer class="footer">
@@ -75,5 +76,6 @@
             </ul>
         </footer>
     </div>
+    <div class="loader"></div>
 </body>
 </html>

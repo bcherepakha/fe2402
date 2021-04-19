@@ -4,11 +4,15 @@ import TaskStorage from './taskStorage.js';
 import Counter from './counter.js';
 import Task from './task.js';
 import Filter from './filter.js';
+import { tasksAPI } from './tasksAPI.js';
 
-new AddTaskForm(addTaskHandler, onCompleteHandler);
+const loader = document.querySelector('.loader');
 
+hideLoader();
+
+const addForm = new AddTaskForm(addTaskHandler, onCompleteHandler);
 const filter = new Filter();
-const taskStorage = new TaskStorage('localServer');
+const taskStorage = new TaskStorage();
 const listComponent = new List();
 const counter = new Counter('.todo-count');
 
@@ -17,7 +21,8 @@ filter.addEventListener('change', onChangeFilter);
 
 listComponent.clear();
 counter.setCount(0);
-taskStorage.read();
+taskStorage.readServer()
+    .then(() => console.log('data received'));
 
 function isTaskHidden(task) {
     const showCompleted = filter.value === '#/completed';
@@ -47,22 +52,38 @@ function onReadData() {
 }
 
 function addTaskHandler(taskObj) {
-    const taskData = {
-        ...taskObj,
-        id: Date.now()
-    };
-    const task = new Task(taskData);
+    addForm.disabled();
+    showLoader();
 
-    if (isTaskHidden(task)) {
-        task.hide();
-    }
+    tasksAPI.addTask(taskObj)
+        .then(taskData => {
+            const task = new Task(taskData);
 
-    taskStorage.addItem(task);
-    task.addEventListener('destroy', removeTaskHandler);
-    task.addEventListener('stateChanged', onStateChanged);
+            if (isTaskHidden(task)) {
+                task.hide();
+            }
 
-    listComponent.addItem( task.render() );
-    counter.setCount( taskStorage.getLength() );
+            taskStorage.addItem(task);
+            task.addEventListener('destroy', removeTaskHandler);
+            task.addEventListener('stateChanged', onStateChanged);
+
+            listComponent.addItem( task.render() );
+            counter.setCount( taskStorage.getLength() );
+
+            addForm.enabled();
+            addForm.clear();
+            hideLoader();
+        })
+        .catch(() => {
+            const answer = confirm('Мы не смогли добавить задачу. Повторить?');
+
+            if (answer) {
+                addTaskHandler(taskObj);
+            } else {
+                addForm.enabled();
+                hideLoader();
+            }
+        });
 }
 
 function removeTaskHandler({ target: task }) {
@@ -107,39 +128,10 @@ function onCompleteHandler(checked) {
     }
 }
 
-const a = {
-    name: 'a',
-    _value: 'b',
-    get value() {
-        return this._value;
-    },
-    set value(newValue) {
-        this._value = newValue;
-    }
-};
+function hideLoader() {
+    loader.hidden = true;
+}
 
-Object.defineProperty(a, 'name', {
-    configurable: true,
-    enumerable: true,
-    value: 'a',
-    writable: false
-});
-
-// Object.defineProperty(a, 'value', {
-//     configurable: true,
-//     enumerable: true,
-//     get: function() {
-//         return this._value;
-//     },
-//     set: function(newValue) {
-//         console.log(newValue);
-//         this._value = newValue;
-//     }
-// });
-
-console.log( a );
-console.log( a.value );
-
-a.value = 'q';
-
-console.log( a.value );
+function showLoader() {
+    loader.hidden = false;
+}

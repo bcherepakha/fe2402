@@ -6,6 +6,7 @@ export function AddTaskForm(addTaskHandler, onCompleteHandler) {
     this.rootEl = document.querySelector('.header');
     this.taskEl = this.rootEl.querySelector('.new-todo');
     this.checkEl = this.rootEl.querySelector('.complete-all');
+    this.submitBtn = this.rootEl.querySelector('.submit');
 
     this.addTaskHandler = addTaskHandler;
 
@@ -29,10 +30,26 @@ AddTaskForm.prototype.onSubmit = function (e) {
         return ;
     }
 
-    this.taskEl.value = '';
-
     this.addTaskHandler({
         text: text,
         completed: this.checkEl.checked
     });
+};
+
+AddTaskForm.prototype.clear = function () {
+    this.taskEl.value = '';
+};
+
+AddTaskForm.prototype.disabled = function () {
+    this.rootEl.classList.add('disabled');
+    this.taskEl.disabled = true;
+    this.checkEl.disabled = true;
+    this.submitBtn.disabled = true;
+};
+
+AddTaskForm.prototype.enabled = function () {
+    this.rootEl.classList.remove('disabled');
+    this.taskEl.disabled = false;
+    this.checkEl.disabled = false;
+    this.submitBtn.disabled = false;
 };
