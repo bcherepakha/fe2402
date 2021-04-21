@@ -5,12 +5,12 @@ import Counter from './counter.js';
 import Task from './task.js';
 import Filter from './filter.js';
 import { tasksAPI } from './tasksAPI.js';
+import Notes from './notes.js';
 
 const loader = document.querySelector('.loader');
 
-hideLoader();
-
-const addForm = new AddTaskForm(addTaskHandler, onCompleteHandler);
+const notes = new Notes();
+const addForm = new AddTaskForm(addTaskHandler, onCompleteHandler, onInputHandler);
 const filter = new Filter();
 const taskStorage = new TaskStorage();
 const listComponent = new List();
@@ -20,9 +20,9 @@ taskStorage.addEventListener('read', onReadData);
 filter.addEventListener('change', onChangeFilter);
 
 listComponent.clear();
-counter.setCount(0);
+counter.setCount(0, 0);
 taskStorage.readServer()
-    .then(() => console.log('data received'));
+    .then(() => hideLoader());
 
 function isTaskHidden(task) {
     const showCompleted = filter.value === '#/completed';
@@ -48,7 +48,7 @@ function onReadData() {
     });
 
     listComponent.addItems(renderedItems);
-    counter.setCount( taskStorage.getLength() );
+    updateCounter();
 }
 
 function addTaskHandler(taskObj) {
@@ -68,7 +68,7 @@ function addTaskHandler(taskObj) {
             task.addEventListener('stateChanged', onStateChanged);
 
             listComponent.addItem( task.render() );
-            counter.setCount( taskStorage.getLength() );
+            updateCounter();
 
             addForm.enabled();
             addForm.clear();
@@ -87,35 +87,44 @@ function addTaskHandler(taskObj) {
 }
 
 function removeTaskHandler({ target: task }) {
-    taskStorage.removeItem( task );
-    counter.setCount( taskStorage.getLength() );
+    tasksAPI
+        .deleteTask(task.id)
+        .then(() => {
+            task.remove();
+            taskStorage.removeItem( task );
+            updateCounter();
+        })
+        .catch((error) => {
+            task.setError(error);
+            notes.addNotion(error.text, 'error');
+        });
 }
 
-function onStateChanged({ target: task }) {
-    const hidden = isTaskHidden(task);
+async function onStateChanged({ target: task }) {
+    if (!task.error) {
+        try {
+            await tasksAPI.updateTask(task.data);
 
-    if (hidden && !task.hidden) {
-        task.hide();
-    } else if (!hidden && task.hidden) {
-        task.show();
+            const hidden = isTaskHidden(task);
+
+            if (hidden && !task.hidden) {
+                task.hide();
+            } else if (!hidden && task.hidden) {
+                task.show();
+            }
+
+            updateCounter();
+        } catch(error) {
+            task.stateBack(error);
+            notes.addNotion(error.text, 'error');
+            updateCounter();
+        }
     }
-
-    taskStorage.write();
-    counter.setCount( taskStorage.getLength() );
 }
 
 function onChangeFilter() {
-    taskStorage.items.forEach(task => {
-        const hidden = isTaskHidden(task);
-
-        if (hidden && !task.hidden) {
-            task.hide();
-        } else if (!hidden && task.hidden) {
-            task.show();
-        }
-    });
-
-    counter.setCount( taskStorage.getLength() );
+    onInputHandler(addForm.taskEl.value);
+    updateCounter();
 }
 
 function onCompleteHandler(checked) {
@@ -134,4 +143,41 @@ function hideLoader() {
 
 function showLoader() {
     loader.hidden = false;
+}
+
+function updateCounter() {
+    counter.setCount( ...taskStorage.getVisibleAndVisibleCompleted() );
+}
+
+function onInputHandler(inputText) {
+    let viewed = 0;
+    let completed = 0;
+
+    taskStorage.items.forEach(task => {
+        const isHidden = isTaskHidden(task);
+
+        if (!inputText) {
+            task.setHidden(isHidden);
+        } else if (!isHidden) {
+            const matched = task.text.indexOf(inputText) >= 0;
+
+            if (matched) {
+                viewed++;
+
+                if (task.completed) {
+                    completed++;
+                }
+
+                if (task.hidden) {
+                    task.show();
+                }
+            } else {
+                task.hide();
+            }
+        } else {
+            task.hide();
+        }
+    });
+
+    counter.setCount( viewed, completed );
 }

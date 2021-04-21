@@ -1,7 +1,7 @@
 // module.exports = {
 //  AddTaskForm: AddTaskForm
 // }
-export function AddTaskForm(addTaskHandler, onCompleteHandler) {
+export function AddTaskForm(addTaskHandler, onCompleteHandler, onInputHandler) {
     //* this.__proto__ = AddTaskForm.prototype
     this.rootEl = document.querySelector('.header');
     this.taskEl = this.rootEl.querySelector('.new-todo');
@@ -9,8 +9,10 @@ export function AddTaskForm(addTaskHandler, onCompleteHandler) {
     this.submitBtn = this.rootEl.querySelector('.submit');
 
     this.addTaskHandler = addTaskHandler;
+    this.onInputHandler = onInputHandler;
 
     this.rootEl.addEventListener('submit', this.onSubmit.bind(this));
+    this.taskEl.addEventListener('input', this.onInput.bind(this));
 
     if (onCompleteHandler) {
         this.checkEl.addEventListener('click', () => {
@@ -18,6 +20,12 @@ export function AddTaskForm(addTaskHandler, onCompleteHandler) {
         });
     }
 }
+
+AddTaskForm.prototype.onInput = function () {
+    if (this.onInputHandler) {
+        this.onInputHandler(this.taskEl.value);
+    }
+};
 
 AddTaskForm.prototype.onSubmit = function (e) {
     e.preventDefault();

@@ -14,6 +14,7 @@
     <script src="counter.js" type="module"></script>
     <script src="taskStorage.js" type="module"></script>
     <script src="tasksAPI.js" type="module"></script>
+    <script src="notes.js" type="module"></script>
     <script src="app.js" type="module"></script>
 </head>
 <body>
@@ -62,7 +63,9 @@
             </ul>
         </div>
         <footer class="footer">
-            <div class="todo-count"><strong>3</strong> items left</div>
+            <div class="todo-count">
+                <strong>3</strong> items left / <strong>0</strong> completed
+            </div>
             <ul class="filters">
                 <li>
                     <a class="selected" href="#/all">All</a>
@@ -77,5 +80,19 @@
         </footer>
     </div>
     <div class="loader"></div>
+    <div class="notes">
+        <div class="note">
+            Some text
+        </div>
+        <div class="note error">
+            Some text
+        </div>
+        <div class="note">
+            Some text
+        </div>
+        <div class="note error">
+            Some text
+        </div>
+    </div>
 </body>
 </html>

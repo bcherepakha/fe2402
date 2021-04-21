@@ -10,6 +10,13 @@ export default class TaskStorage extends EventEmiter {
         this.items = [];
     }
 
+    getVisibleAndVisibleCompleted() {
+        const visibleTasks = this.items.filter(task => !task.hidden);
+        const visibleCompleted = visibleTasks.filter(task => task.completed);
+
+        return [visibleTasks.length, visibleCompleted.length];
+    }
+
     getLength() {
         return this.items.filter(task => !task.hidden).length;
     }

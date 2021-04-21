@@ -18,6 +18,59 @@ class TasksAPI {
             response => response.json()
         );
     }
+
+    updateTask(data) {
+        return fetch(`${this.serverURI}/tasks/${data.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .catch(error => {
+                return Promise.reject({
+                    code: 600,
+                    text: error
+                });
+            })
+            .then(response => {
+                if (response.status < 200 || response.status > 299) {
+                    return response.json()
+                        .then(text => Promise.reject({
+                            code: response.status,
+                            text
+                        }));
+                }
+
+                return response.json();
+            });
+    }
+
+    deleteTask(id) {
+        return fetch(`${this.serverURI}/tasks/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .catch(error => {
+                return Promise.reject({
+                    code: 600,
+                    text: error
+                });
+            })
+            .then(response => {
+                if (response.status < 200 || response.status > 299) {
+                    return response.json()
+                        .then(text => Promise.reject({
+                            code: response.status,
+                            text
+                        }));
+                }
+
+                return response.json();
+            });
+    }
 }
 
 export const tasksAPI = new TasksAPI('https://5d9969125641430014051850.mockapi.io');

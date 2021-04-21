@@ -1,11 +1,16 @@
 export default class Counter {
     constructor(selector) {
         this.rootEl = document.querySelector(selector);
-        this.digitEl = this.rootEl.querySelector('strong');
+
+        const [digitEl, completedEl] = Array.from(this.rootEl.querySelectorAll('strong'));
+
+        this.digitEl = digitEl;
+        this.completedEl = completedEl;
     }
 
-    setCount(newCount) {
+    setCount(newCount, newCompleted) {
         this.digitEl.innerText = newCount;
+        this.completedEl.innerText = newCompleted;
     }
 
     getCount() {

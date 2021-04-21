@@ -3,13 +3,14 @@ import EventEmiter from './eventEmiter.js';
 const DB_CLICK_TIME = 500;
 
 export default class Task extends EventEmiter {
-    constructor(taskObj, removeTaskHandler) {
+    constructor(taskObj) {
         super();
 
         if (!taskObj.id) {
             throw new Error(`not valid id: ${taskObj.id}`);
         }
 
+        this.error = null;
         this.state = taskObj;
         this.editing = false;
         this.hidden = false;
@@ -17,9 +18,20 @@ export default class Task extends EventEmiter {
         this._events = {};
 
         this.outlineClick = this.outlineClick.bind(this);
-        this.removeTaskHandler = removeTaskHandler;
 
         this.createElements();
+    }
+
+    get data() {
+        return {...this.state};
+    }
+
+    get id() {
+        return this.state.id;
+    }
+
+    get text() {
+        return this.state.text;
     }
 
     get completed() {
@@ -65,11 +77,13 @@ export default class Task extends EventEmiter {
         this.rootEl = rootEl;
     }
 
-    destroy() {
+    remove() {
         this.rootEl.remove();
 
         document.removeEventListener('click', this.outlineClick);
+    }
 
+    destroy() {
         this.dispatch('destroy');
     }
 
@@ -99,14 +113,44 @@ export default class Task extends EventEmiter {
         this.toggleEditing();
     }
 
-    changeText(newText, needRender = true) {
-        this.state.text = newText;
+    setError(error, needRender = true) {
+        this.error = error;
+
+        if (needRender) {
+            this.render();
+        }
+    }
+
+    stateBack(error) {
+        if (error) {
+            this.setError(error, false);
+        }
+
+        this.setState(this.prevState);
+    }
+
+    setState(newState, needRender = true) {
+        this.prevState = this.state;
+        this.state = {
+            ...this.state,
+            ...newState
+        };
 
         if (needRender) {
             this.render();
         }
 
         this.dispatch('stateChanged');
+    }
+
+    changeText(newText, needRender = true) {
+        if (this.error) {
+            this.setError(null, false);
+        }
+
+        this.setState({
+            text: newText
+        }, needRender);
     }
 
     onDbClickHandler() {
@@ -125,19 +169,32 @@ export default class Task extends EventEmiter {
     }
 
     onChangeCompleted() {
-        this.state.completed = this.completedEl.checked;
-        this.dispatch('stateChanged');
-        this.render();
+        if (this.error) {
+            this.setError(null, false);
+        }
+
+        this.setState({
+            completed: this.completedEl.checked
+        });
     }
 
     toggleCompleted() {
-        this.state.completed = !this.state.completed;
-        this.dispatch('stateChanged');
-        this.render();
+        if (this.error) {
+            this.setError(null, false);
+        }
+
+        this.setState({
+            completed: !this.state.completed
+        });
     }
 
     toggleEditing() {
         this.editing = !this.editing;
+        this.render();
+    }
+
+    setHidden(hidden) {
+        this.hidden = hidden;
         this.render();
     }
 
@@ -153,7 +210,7 @@ export default class Task extends EventEmiter {
 
     render() {
         const { completed, text } = this.state;
-        const { editing, hidden } = this;
+        const { editing, hidden, error } = this;
 
         this.rootEl.hidden = hidden;
         this.textEl.innerText = text;
@@ -170,6 +227,12 @@ export default class Task extends EventEmiter {
             this.rootEl.classList.add('editing');
         } else {
             this.rootEl.classList.remove('editing');
+        }
+
+        if (error) {
+            this.rootEl.classList.add('error');
+        } else {
+            this.rootEl.classList.remove('error');
         }
 
         return this.rootEl;
