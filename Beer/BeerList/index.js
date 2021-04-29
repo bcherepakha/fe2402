@@ -4,6 +4,7 @@ export default class BeerList {
     constructor(props) {
         this.props = props;
         this.items = [];
+        this.pages = {};
     }
 
     get rootEl() {
@@ -44,11 +45,14 @@ export default class BeerList {
     }
 
     toggleFavor(beerItem) {
-        return () => {
+        return async () => {
             const {id} = beerItem;
 
-            this.props.favor.toggle(id);
-            this.renderBeer(beerItem);
+            const answer = await this.props.favor.toggle(id);
+
+            if (answer) {
+                this.renderBeer(beerItem);
+            }
         };
     }
 
@@ -58,6 +62,32 @@ export default class BeerList {
 
     addItems(items) {
         this.items.push(...items.map(this.createItem, this));
+    }
+
+    hasPage(pageNum) {
+        return !!this.pages[pageNum];
+    }
+
+    addPage(pageNum, items) {
+        this.pages[pageNum] = items.map(this.createItem, this);
+    }
+
+    renderPages(pages = []) {
+        this.clear();
+
+        const items = [];
+
+        pages.forEach(pageNum => {
+            if (!this.pages[pageNum]) {
+                return ;
+            }
+
+            this.pages[pageNum].forEach(beerItem => {
+                items.push(this.renderBeer(beerItem));
+            });
+        });
+
+        this.rootEl.append( ...items );
     }
 
     add(items) {
